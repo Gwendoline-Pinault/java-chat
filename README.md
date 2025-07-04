@@ -1,10 +1,12 @@
 # Projet de chat en Java
 
 ## Installation
-1. Cloner le dépôt.
-2. Lancer le serveur en vous plaçant dans le dossier /src depuis le terminal :
+1. Clonez le dépôt.
+2. Placez-vous dans le répertoire ```/src```.
+3. Compilez les fichiers java : ```javac -d /bin *```
+4. Lancez le serveur depuis le terminal :
 ``` java EchoServerGUI ```
-3. Lancer le client
+5. Lancez le client depuis le terminal
 ``` java EchoClientGUI ```
 
 ## Fonctionnement

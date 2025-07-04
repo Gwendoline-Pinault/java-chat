@@ -1,8 +1,6 @@
 import java.awt.*;
 import java.io.*;
 import java.net.*;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import javax.swing.*;
 
@@ -13,7 +11,7 @@ public class EchoServerGUI extends JFrame {
 
   public EchoServerGUI() {
     setTitle("Serveur");
-    setSize(300, 200);
+    setSize(400, 300);
     setDefaultCloseOperation(EXIT_ON_CLOSE);
 
     // Zone de texte pour afficher les messages du client
@@ -53,13 +51,14 @@ public class EchoServerGUI extends JFrame {
       BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
       PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true)) {
       String message;
+      String adresse = clientSocket.getInetAddress() + ":" + clientSocket.getPort(); 
 
       message = in.readLine();
 
       // Connexion d'un client : récupération de son nom et stockage dans la liste
       if (message != null & message.contains(" a rejoint le chat.")) {
         clientName = message.split(" a rejoint le chat.")[0]; // Récupère le nom du client
-        log(clientName + " est en ligne.");
+        log(clientName + " est connecté avec l'adresse " + adresse);
         clients.add(new Client(clientName, out)); // stocke le client dans la liste pour traitements
         for (Client client : clients) {
           if (!client.getName().equals(clientName)) { // Informe les clients connectés de la connexion d'un autre utilisateur
@@ -73,10 +72,10 @@ public class EchoServerGUI extends JFrame {
           log(clientName + " a quitté la session.");
           break;
         }
-        LocalDateTime now = LocalDateTime.now(); // récupère la date et l'heure actuelles
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy, HH:mm"); // formate la date jour/mois/année, heures:minutes
-        String currentTime = now.format(formatter);
-        log("[" + currentTime + "] " + clientName + " : " + message);
+        // LocalDateTime now = LocalDateTime.now(); // récupère la date et l'heure actuelles
+        // DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy, HH:mm"); // formate la date jour/mois/année, heures:minutes
+        // String currentTime = now.format(formatter);
+        // log(clientName + " : " + message);
 
         if (message.startsWith("@")){
           String target = message.split(" ")[0]; // récupère le nom du destinataire
@@ -87,7 +86,7 @@ public class EchoServerGUI extends JFrame {
           // Cherche le client correspondant pour envoyer le message privé
           for (Client client: clients) {
             if (client.getName().equals(target)) { // Vérifie si le client est dans la liste
-              client.getOut().println("[" + currentTime + "] " + clientName + " : " + contentMessage); // Envoie le message sur le chat du destinataire
+              client.getOut().println(clientName + " : " + contentMessage); // Envoie le message sur le chat du destinataire
               found = true;
               break; // Sort de la boucle une fois le message envoyé
             }

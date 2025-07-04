@@ -1,6 +1,8 @@
 import java.awt.*;
 import java.io.*;
 import java.net.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import javax.swing.*;
 
 public class EchoClientGUI extends JFrame {
@@ -10,12 +12,11 @@ public class EchoClientGUI extends JFrame {
   private PrintWriter out;
   private BufferedReader in;
   private Socket socket;
-  private JButton logoutButton;
 
   public EchoClientGUI(String clientName) {
     this.clientName = clientName;
     setTitle("Chat - " + clientName);
-    setSize(300, 200);
+    setSize(500, 400);
     setDefaultCloseOperation(EXIT_ON_CLOSE);
 
     chatArea = new JTextArea();
@@ -23,15 +24,27 @@ public class EchoClientGUI extends JFrame {
     chatArea.setWrapStyleWord(true);
     chatArea.setEditable(false);
     inputField = new JTextField();
-    logoutButton = new JButton("Déconnexion");
-    JPanel pano = new JPanel(); 
+    MyButton logoutButton = new MyButton("Déconnexion");
+    MyButton sendButton = new MyButton("Envoyer");
+    JPanel headerZone = new JPanel();
+    JPanel inputZone = new JPanel();
+    BoxLayout box = new BoxLayout(inputZone, BoxLayout.X_AXIS);
+    inputZone.setLayout(box);
 
-    pano.add(logoutButton);
-    add(pano, BorderLayout.NORTH);
+    // header zone
+    headerZone.add(logoutButton);
+    add(headerZone, BorderLayout.NORTH);
+
+    // chat zone
     add(new JScrollPane(chatArea), BorderLayout.CENTER);
-    add(inputField, BorderLayout.SOUTH);
 
-    inputField.addActionListener(e -> sendMessage());
+    // inputZone
+    inputZone.add(inputField);
+    inputZone.add(sendButton);
+    add(inputZone, BorderLayout.SOUTH);
+ 
+    // listeners
+    sendButton.addActionListener(e -> sendMessage());
     logoutButton.addActionListener(e -> {
       try {
         out.println("exit"); // Envoie le message de déconnexion au serveur
@@ -42,6 +55,7 @@ public class EchoClientGUI extends JFrame {
         chatArea.append("Erreur de fermeture : " + ex.getMessage() + "\n");
       }
     });
+
 
     // connect client to server
     connectToServer();
@@ -84,8 +98,11 @@ public class EchoClientGUI extends JFrame {
     if (message.isEmpty())
       return;
 
+    LocalDateTime now = LocalDateTime.now(); // récupère la date et l'heure actuelles
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy, HH:mm"); // formate la date jour/mois/année, heures:minutes
+    String currentTime = now.format(formatter);
     out.println(message); // Envoie au serveur
-    chatArea.append(this.clientName + " : " + message + "\n");
+    chatArea.append("[" + currentTime + "] " + this.clientName + " : " + message + "\n");
     inputField.setText("");
 
     if (message.equalsIgnoreCase("exit")) {

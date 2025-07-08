@@ -5,7 +5,7 @@ Lien vers le [projet GitHub](https://github.com/Gwendoline-Pinault/java-chat)
 ## Installation
 1. Clonez le dépôt.
 2. Placez-vous dans le répertoire ```/src```.
-3. Compilez les fichiers java : ```javac -d ./bin *```
+3. Compilez les fichiers java : ```javac *.java```
 4. Lancez le serveur depuis le terminal :
 ``` java EchoServerGUI ```
 5. Lancez le client depuis le terminal

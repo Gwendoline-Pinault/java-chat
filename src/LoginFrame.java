@@ -1,4 +1,5 @@
 import java.awt.BorderLayout;
+import java.awt.Button;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -32,8 +33,8 @@ public class LoginFrame extends JFrame{
     panel.add(nameField);
 
     // -------- Bouton de connexion -----------
-    MyButton connectButton = new MyButton("Se connecter");
-    connectButton.setAlignmentX(CENTER_ALIGNMENT);
+    Button connectButton = new Button("Se connecter");
+
     // listener
     connectButton.addActionListener(e -> {
       // Met à jour le nom du client dans la variable de la classe

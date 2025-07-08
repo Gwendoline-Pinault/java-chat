@@ -1,6 +1,8 @@
 import java.awt.*;
 import java.io.*;
 import java.net.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import javax.swing.*;
 
@@ -72,10 +74,10 @@ public class EchoServerGUI extends JFrame {
           log(clientName + " a quitté la session.");
           break;
         }
-        // LocalDateTime now = LocalDateTime.now(); // récupère la date et l'heure actuelles
-        // DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy, HH:mm"); // formate la date jour/mois/année, heures:minutes
-        // String currentTime = now.format(formatter);
-        // log(clientName + " : " + message);
+        LocalDateTime now = LocalDateTime.now(); // récupère la date et l'heure actuelles
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy, HH:mm"); // formate la date jour/mois/année, heures:minutes
+        String currentTime = now.format(formatter);
+        log("[" + currentTime + "] " + clientName + " : " + message);
 
         if (message.startsWith("@")){
           String target = message.split(" ")[0]; // récupère le nom du destinataire
@@ -86,7 +88,7 @@ public class EchoServerGUI extends JFrame {
           // Cherche le client correspondant pour envoyer le message privé
           for (Client client: clients) {
             if (client.getName().equals(target)) { // Vérifie si le client est dans la liste
-              client.getOut().println(clientName + " : " + contentMessage); // Envoie le message sur le chat du destinataire
+              client.getOut().println("[" + currentTime + "] " + clientName + " : " + contentMessage); // Envoie le message sur le chat du destinataire
               found = true;
               break; // Sort de la boucle une fois le message envoyé
             }

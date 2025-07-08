@@ -24,8 +24,8 @@ public class EchoClientGUI extends JFrame {
     chatArea.setWrapStyleWord(true);
     chatArea.setEditable(false);
     inputField = new JTextField();
-    MyButton logoutButton = new MyButton("Déconnexion");
-    MyButton sendButton = new MyButton("Envoyer");
+    Button logoutButton = new Button("Déconnexion");
+    Button sendButton = new Button("Envoyer");
     JPanel headerZone = new JPanel();
     JPanel inputZone = new JPanel();
     BoxLayout box = new BoxLayout(inputZone, BoxLayout.X_AXIS);
